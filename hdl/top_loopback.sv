@@ -12,77 +12,15 @@ module top_loopback #(
     output logic [7:0] led = 8'b0000_0001
 );
 
-  wire clk_125mhz_ibufg;
-  wire clk_125mhz_mmcm_out;
   wire clk;
-
-  wire mmcm_rst = rst;
-  wire mmcm_locked;
-  wire mmcm_clkfb;
 
   IBUFGDS #(
       .DIFF_TERM("FALSE"),
       .IBUF_LOW_PWR("FALSE")
   ) clk_125mhz_ibufg_inst (
-      .O (clk_125mhz_ibufg),
+      .O (clk),
       .I (clk_125mhz_p),
       .IB(clk_125mhz_n)
-  );
-
-  MMCME3_BASE #(
-      .BANDWIDTH("OPTIMIZED"),
-      .CLKOUT0_DIVIDE_F(5),
-      .CLKOUT0_DUTY_CYCLE(0.5),
-      .CLKOUT0_PHASE(0),
-      .CLKOUT1_DIVIDE(1),
-      .CLKOUT1_DUTY_CYCLE(0.5),
-      .CLKOUT1_PHASE(0),
-      .CLKOUT2_DIVIDE(1),
-      .CLKOUT2_DUTY_CYCLE(0.5),
-      .CLKOUT2_PHASE(0),
-      .CLKOUT3_DIVIDE(1),
-      .CLKOUT3_DUTY_CYCLE(0.5),
-      .CLKOUT3_PHASE(0),
-      .CLKOUT4_DIVIDE(1),
-      .CLKOUT4_DUTY_CYCLE(0.5),
-      .CLKOUT4_PHASE(0),
-      .CLKOUT5_DIVIDE(1),
-      .CLKOUT5_DUTY_CYCLE(0.5),
-      .CLKOUT5_PHASE(0),
-      .CLKOUT6_DIVIDE(1),
-      .CLKOUT6_DUTY_CYCLE(0.5),
-      .CLKOUT6_PHASE(0),
-      .CLKFBOUT_MULT_F(5),
-      .CLKFBOUT_PHASE(0),
-      .DIVCLK_DIVIDE(1),
-      .REF_JITTER1(0.010),
-      .CLKIN1_PERIOD(8.0),
-      .STARTUP_WAIT("FALSE"),
-      .CLKOUT4_CASCADE("FALSE")
-  ) clk_mmcm_inst (
-      .CLKIN1(clk_125mhz_ibufg),
-      .CLKFBIN(mmcm_clkfb),
-      .RST(mmcm_rst),
-      .PWRDWN(1'b0),
-      .CLKOUT0(clk_125mhz_mmcm_out),
-      .CLKOUT0B(),
-      .CLKOUT1(),
-      .CLKOUT1B(),
-      .CLKOUT2(),
-      .CLKOUT2B(),
-      .CLKOUT3(),
-      .CLKOUT3B(),
-      .CLKOUT4(),
-      .CLKOUT5(),
-      .CLKOUT6(),
-      .CLKFBOUT(mmcm_clkfb),
-      .CLKFBOUTB(),
-      .LOCKED(mmcm_locked)
-  );
-
-  BUFG clk_125mhz_bufg_inst (
-      .I(clk_125mhz_mmcm_out),
-      .O(clk)
   );
 
   logic rstn;
