@@ -9,37 +9,43 @@ from cocotb.clock import Clock
 from cocotb.triggers import (
     ClockCycles,
     ReadWrite,
-    ReadOnly,
+    RisingEdge,
 )
+from cocotb.log import SimLog
 from cocotb.runner import get_runner
+
+import axis_tools
+
+
+async def resetn(clk, rstn):
+    await RisingEdge(clk)
+    await ReadWrite()
+    rstn.value = 0
+    await ClockCycles(clk, 5)
+    await ReadWrite()
+    rstn.value = 1
 
 
 @cocotb.test()
 async def test_basic(dut):
     clk = dut.s_axis_aclk
-    cocotb.start_soon(Clock(clk, 10, units="ns").start())
-
     rstn = dut.s_axis_aresetn
-    tvalid = dut.s_axis_tvalid
-    tdata = dut.s_axis_tdata
-    tready = dut.s_axis_tready
+    cocotb.start_soon(Clock(clk, 10, units="ns").start())
+    await resetn(clk, rstn)
 
-    rstn.value = 0
-    tvalid.value = 0
-    tdata.value = 0
-    await ClockCycles(clk, 5)
-    rstn.value = 1
+    logger = SimLog("cocotb.tb.monitor_cb")
 
-    await ClockCycles(clk, 5)
-    await ReadWrite()
-    tvalid.value = 1
-    tdata.value = 0b01010101
+    def cb(txn):
+        logger.info(f"Sent to uart_tx: {txn}")
 
-    await ClockCycles(clk, 1)
-    await ReadWrite()
-    tvalid.value = 0
+    driver = axis_tools.AXISDriver(dut, "s", clk)
+    monitor = axis_tools.AXISMonitor(dut, "s", clk, callback=cb)
 
-    await ClockCycles(clk, 100)
+    driver.append(0b01010101)
+    driver.append(0b11001100)
+    driver.append(0b10000001)
+
+    await ClockCycles(clk, 500)
 
 
 def test_runner():

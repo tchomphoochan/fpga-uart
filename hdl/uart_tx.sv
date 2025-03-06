@@ -66,7 +66,10 @@ module uart_tx #(
         if (end_of_cycle && data_counter == 7) next_state = STOP;
       end
       STOP: begin
-        if (end_of_cycle) next_state = IDLE;
+        if (end_of_cycle) begin
+          if (do_latch_data) next_state = START;
+          else next_state = IDLE;
+        end
       end
     endcase
   end
@@ -94,7 +97,7 @@ module uart_tx #(
   /// AXI ready signal
   /// ---
 
-  assign s_axis_tready = state == IDLE;
+  assign s_axis_tready = state == IDLE || state == STOP && end_of_cycle;
 
   /// ---
   /// AXI txn logic: whether to latch data or not
@@ -128,6 +131,7 @@ module uart_tx #(
   localparam STOP_BIT = 1'b1;
 
   always_comb begin
+    tx_bit = 0;
     case (state)
       IDLE:  tx_bit = IDLE_BIT;
       START: tx_bit = START_BIT;
