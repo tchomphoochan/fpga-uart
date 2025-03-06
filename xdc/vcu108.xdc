@@ -21,12 +21,10 @@ create_clock -period 8.000 -name clk_125mhz [get_ports clk_125mhz_p]
 ## UART
 set_property -dict {LOC BE24 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8} [get_ports uart_txd]
 set_property -dict {LOC BC24 IOSTANDARD LVCMOS18} [get_ports uart_rxd]
-# set_property -dict {LOC BF24 IOSTANDARD LVCMOS18 SLEW SLOW DRIVE 8} [get_ports uart_rts]
-# set_property -dict {LOC BD22 IOSTANDARD LVCMOS18} [get_ports uart_cts]
-# set_false_path -to [get_ports {uart_txd uart_rts}]
-# set_output_delay 0 [get_ports {uart_txd uart_rts}]
-# set_false_path -from [get_ports {uart_rxd uart_cts}]
-# set_input_delay 0 [get_ports {uart_rxd uart_cts}]
+set_false_path -to [get_ports uart_txd]
+set_output_delay 0 [get_ports uart_txd]
+set_false_path -from [get_ports uart_rxd]
+set_input_delay 0 [get_ports uart_rxd]
 
 # Mostly taken from: https://github.com/alexforencich/verilog-ethernet/blob/master/example/VCU108/fpga_1g/fpga.xdc#L101-L110
 # Other references
