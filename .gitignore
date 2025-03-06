@@ -3,3 +3,7 @@ __pycache__/
 sim_build/
 *.swp
 .DS_Store
+*.log
+*.jou
+.Xil/
+obj/

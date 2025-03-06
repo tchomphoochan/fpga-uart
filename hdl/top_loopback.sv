@@ -8,7 +8,8 @@ module top_loopback #(
     input  wire clk_125mhz_p,
     input  wire clk_125mhz_n,
     input  wire uart_rxd,
-    output wire uart_txd
+    output logic uart_txd,
+    output logic [7:0] led = 8'b0000_0001
 );
 
   wire clk_125mhz_ibufg;
@@ -114,6 +115,16 @@ module top_loopback #(
       .s_axis_tdata(uart_rx_data_out),
       .s_axis_tready(uart_rx_ready_in)
   );
+
+  logic [31:0] counter = 0;
+
+  always_ff @(posedge clk) begin
+    counter <= counter+1;
+    if (counter == CLOCK_FREQ_HZ-1) begin
+      counter <= 0;
+      led <= led == 8'b10000000 ? 8'b00000001 : (led<<1);
+    end
+  end
 
 endmodule
 
