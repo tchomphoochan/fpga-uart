@@ -26,9 +26,13 @@ module top_loopback #(
   logic rstn;
   assign rstn = !rst;
 
-  logic uart_rx_valid_out;
-  logic [7:0] uart_rx_data_out;
-  logic uart_rx_ready_in;
+  logic rx_word_valid;
+  logic [7:0] rx_word_content;
+  logic rx_ready;
+
+  logic tx_word_valid;
+  logic [7:0] tx_word_content;
+  logic tx_ready;
 
   uart_rx #(
       .CLOCK_FREQ_HZ(CLOCK_FREQ_HZ),
@@ -37,9 +41,20 @@ module top_loopback #(
       .rx_bit(uart_rxd),
       .m_axis_aclk(clk),
       .m_axis_aresetn(rstn),
-      .m_axis_tvalid(uart_rx_valid_out),
-      .m_axis_tdata(uart_rx_data_out),
-      .m_axis_tready(uart_rx_ready_in)
+      .m_axis_tvalid(rx_word_valid),
+      .m_axis_tdata(rx_word_content),
+      .m_axis_tready(rx_ready)
+  );
+
+  axis_fifo_64x8 fifo_inst (
+      .s_axis_aresetn(rstn),
+      .s_axis_aclk(clk),
+      .s_axis_tvalid(rx_word_valid),
+      .s_axis_tready(rx_ready),
+      .s_axis_tdata(rx_word_content),
+      .m_axis_tvalid(tx_word_valid),
+      .m_axis_tready(tx_ready),
+      .m_axis_tdata(tx_word_content)
   );
 
   uart_tx #(
@@ -49,9 +64,9 @@ module top_loopback #(
       .tx_bit(uart_txd),
       .s_axis_aclk(clk),
       .s_axis_aresetn(rstn),
-      .s_axis_tvalid(uart_rx_valid_out),
-      .s_axis_tdata(uart_rx_data_out),
-      .s_axis_tready(uart_rx_ready_in)
+      .s_axis_tvalid(tx_word_valid),
+      .s_axis_tdata(tx_word_content),
+      .s_axis_tready(tx_ready)
   );
 
   logic [31:0] counter = 0;
