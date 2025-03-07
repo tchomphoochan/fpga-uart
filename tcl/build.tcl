@@ -49,7 +49,7 @@ if {[llength $sources_mem] > 0} {
 
 ## IP generation
 
-set $ip_dir ./ip/$vivado_version
+set ip_dir ./ip/$vivado_version
 set sources_ip [ glob -nocomplain -directory $ip_dir -tails * ]
 puts $sources_ip
 foreach ip_source $sources_ip {
