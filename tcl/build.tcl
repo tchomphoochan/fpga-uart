@@ -40,7 +40,7 @@ if {[llength $sources_v] > 0 } {
   read_verilog $sources_v
 }
 # Read in constraint files:
-read_xdc ./xdc/$BOARD.xdc
+read_xdc ./xdc/$board.xdc
 # read in all (if any) hex memory files:
 set sources_mem [ glob -nocomplain ./data/*.mem ]
 if {[llength $sources_mem] > 0} {

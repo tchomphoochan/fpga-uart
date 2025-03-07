@@ -13,9 +13,13 @@ BUILD_TARGETS:=$(foreach board, $(SUPPORTED_BOARDS), build.$(board))
 BITSTREAM_TARGETS:=$(foreach board, $(SUPPORTED_BOARDS), build/$(board)/final.bit)
 FLASH_TARGETS:=$(foreach board, $(SUPPORTED_BOARDS), flash.$(board))
 
-.PHONY: all $(BUILD_TARGETS) $(FLASH_TARGETS)
+.PHONY: all clean $(BUILD_TARGETS) $(FLASH_TARGETS)
 all: $(BUILD_TARGETS)
+	
 
+clean: 
+	@echo "Cleaning log files... (but not the builds!)"
+	rm -f *.log *.jou *.str
 
 $(BUILD_TARGETS): build.%: build/%/final.bit
 
