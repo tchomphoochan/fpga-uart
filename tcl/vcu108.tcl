@@ -44,10 +44,14 @@ puts $sources_ip
 foreach ip_source $sources_ip {
   if {[file isdirectory ./ip/$ip_source]} {
 	  read_ip ./ip/$ip_source/$ip_source.xci
-    set ip_wrappers_v [ glob ./ip/$ip_source/*.v ]
-    read_verilog $ip_wrappers_v
-    set ip_wrappers_sv [ glob ./ip/$ip_source/*.sv ]
-    read_verilog $ip_wrappers_sv
+    set ip_wrappers_v [ glob -nocomplain ./ip/$ip_source/*.v ]
+    if {[llength $ip_wrappers_v] > 0 } {
+      read_verilog $ip_wrappers_v
+    }
+    set ip_wrappers_sv [ glob -nocomplain ./ip/$ip_source/*.sv ]
+    if {[llength $ip_wrappers_sv] > 0 } {
+      read_verilog $ip_wrappers_sv
+    }
   }
 }
 generate_target all [get_ips]
