@@ -1,0 +1,7 @@
+synth/
+sim/
+doc/
+*.xdc
+*.veo
+*stub*
+!*.xci
