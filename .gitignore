@@ -7,3 +7,5 @@ sim_build/
 *.jou
 .Xil/
 obj/
+build/
+ipshared/
