@@ -5,7 +5,7 @@
     "cell_name": "axis_fifo_64x8",
     "component_reference": "xilinx.com:ip:axis_data_fifo:2.0",
     "ip_revision": "13",
-    "gen_directory": "./ip/axis_fifo_64x8",
+    "gen_directory": ".",
     "parameters": {
       "component_parameters": {
         "TDATA_NUM_BYTES": [ { "value": "1", "value_src": "user", "value_permission": "bd_and_user", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -54,7 +54,7 @@
       },
       "project_parameters": {
         "ARCHITECTURE": [ { "value": "virtexu" } ],
-        "BASE_BOARD_PART": [ { "value": "xilinx.com:vcu108:part0:1.7" } ],
+        "BASE_BOARD_PART": [ { "value": "" } ],
         "BOARD_CONNECTIONS": [ { "value": "" } ],
         "DEVICE": [ { "value": "xcvu095" } ],
         "NEXTGEN_VERSAL": [ { "value": "0" } ],
@@ -70,7 +70,7 @@
         "IPCONTEXT": [ { "value": "IP_Integrator" } ],
         "IPREVISION": [ { "value": "13" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "./ip/axis_fifo_64x8" } ],
+        "OUTPUTDIR": [ { "value": "." } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2024.1" } ],

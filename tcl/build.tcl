@@ -67,10 +67,10 @@ synth_ip [get_ips]
 set stage 1_synth
 synth_design -top $top_level -part $part -verbose
 opt_design
-write_checkpoint -force $output_dir/$stage.dcp
-report_timing_summary -file $output_dir/$stage_timing_summary.rpt
-report_utilization -file $output_dir/$stage_util.rpt -hierarchical -hierarchical_depth 4
-report_timing -file $output_dir/$stage_timing.rpt
+write_checkpoint -force $output_dir/${stage}.dcp
+report_timing_summary -file $output_dir/${stage}_timing_summary.rpt
+report_utilization -file $output_dir/${stage}_util.rpt -hierarchical -hierarchical_depth 4
+report_timing -file $output_dir/${stage}_timing.rpt
 
 # Run place
 
@@ -83,23 +83,23 @@ if {[get_property SLACK [get_timing_paths -max_paths 1 -nworst 1 -setup]] < 0} {
  phys_opt_design
 }
 
-write_checkpoint -force $output_dir/$stage.dcp
-report_timing_summary -file $output_dir/$stage_timing_summary.rpt
-report_utilization -file $output_dir/$stage_util.rpt
-report_timing -file $output_dir/$stage_timing.rpt
-report_clock_utilization -file $output_dir/$stage_clock_util.rpt
+write_checkpoint -force $output_dir/${stage}.dcp
+report_timing_summary -file $output_dir/${stage}_timing_summary.rpt
+report_utilization -file $output_dir/${stage}_util.rpt
+report_timing -file $output_dir/${stage}_timing.rpt
+report_clock_utilization -file $output_dir/${stage}_clock_util.rpt
 
 # Run route
 
 set stage 3_route
 route_design -directive Explore
 
-write_checkpoint -force $output_dir/$stage.dcp
-report_route_status -file $output_dir/$stage_status.rpt
-report_timing_summary -file $output_dir/$stage_timing_summary.rpt
-report_timing -file $output_dir/$stage_timing.rpt
-report_power -file $output_dir/$stage_power.rpt
-report_drc -file $output_dir/$stage_drc.rpt
+write_checkpoint -force $output_dir/${stage}.dcp
+report_route_status -file $output_dir/${stage}_status.rpt
+report_timing_summary -file $output_dir/${stage}_timing_summary.rpt
+report_timing -file $output_dir/${stage}_timing.rpt
+report_power -file $output_dir/${stage}_power.rpt
+report_drc -file $output_dir/${stage}_drc.rpt
 
 # Write bitstream
 
