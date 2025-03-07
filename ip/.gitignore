@@ -1,7 +1,13 @@
 synth/
 sim/
 doc/
+hdl/
 *.xdc
 *.veo
+*.vho
+*.dcp
+*.xml
 *stub*
+*netlist*
+
 !*.xci
